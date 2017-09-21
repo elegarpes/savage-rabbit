@@ -4,7 +4,8 @@
   "description": "Interviews scheduler",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "./node_modules/webpack/bin/webpack.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.24.1",
     "jest": "^21.1.0",
+    "nodemon": "^1.12.1",
     "webpack": "^3.6.0"
   },
   "dependencies": {
