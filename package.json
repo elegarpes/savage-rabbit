@@ -15,5 +15,13 @@
   "bugs": {
     "url": "https://github.com/elegarpes/savage-rabbit/issues"
   },
-  "homepage": "https://github.com/elegarpes/savage-rabbit#readme"
+  "homepage": "https://github.com/elegarpes/savage-rabbit#readme",
+  "devDependencies": {
+    "jest": "^21.1.0",
+    "webpack": "^3.6.0"
+  },
+  "dependencies": {
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
+  }
 }
