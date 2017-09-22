@@ -13,8 +13,8 @@
   ],
   "background": {
     "scripts": [
-      "src/background.js",
-      "hot-reload.js"
+      "src/js/background.js",
+      "src/js/hot-reload.js"
     ]
   }
 }

@@ -1,5 +1,5 @@
 module.exports = {
-	entry: './src/app.js',
+	entry: './src/js/scripts.js',
 
 	module: {
 	  rules: [
@@ -12,6 +12,10 @@ module.exports = {
             }
         }
 	  ]
+	},
+
+	resolve: {
+		extensions: ['.js', '.json']
 	},
 
 	output: {
