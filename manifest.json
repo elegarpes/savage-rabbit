@@ -14,7 +14,8 @@
   "background": {
     "scripts": [
       "src/js/background.js",
-      "src/js/hot-reload.js"
+      "src/js/hot-reload.js",
+      "gapi-client.js"
     ]
   }
 }

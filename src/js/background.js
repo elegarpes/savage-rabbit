@@ -2,3 +2,9 @@
 chrome.browserAction.onClicked.addListener(function(tab) {
     chrome.tabs.create({'url': chrome.extension.getURL('src/index.html')});
 });
+
+window.gapi_onload = function(){
+  console.log('gapi loaded.', gapi.auth, gapi.client);
+
+  // Do things you want with gapi.auth and gapi.client.
+}

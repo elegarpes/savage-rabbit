@@ -20,5 +20,5 @@ module.exports = {
 
 	output: {
 		filename: './src/bundle.js'
-	}
+	},
 }
