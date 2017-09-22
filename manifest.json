@@ -1,18 +1,20 @@
 {
   "manifest_version": 2,
-
   "name": "Savage Rabbit",
   "description": "This extension allows you to find people available in calendar",
   "version": "1.0",
-
   "browser_action": {
-    "default_icon": "icon.png",
-    "default_popup": "src/popup.html"
+    "default_icon": "icon.png"
   },
   "permissions": [
     "activeTab",
+    "tabs",
     "storage"
   ],
-
-  "background": { "scripts": ["hot-reload.js"] }
+  "background": {
+    "scripts": [
+      "src/background.js",
+      "hot-reload.js"
+    ]
+  }
 }
