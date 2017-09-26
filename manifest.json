@@ -1,4 +1,5 @@
 {
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuQm/x8Ydv7uxcttauYCXP5LEvMYmXRauaUiddsU24lHFowZINWX4LFxxsaita72nx1Gj2eK9t0p5zFJxGsU/CKPqqDQOcIMB4/WF1a7fUykCQOwPOubEmnVSgbM264SRoEq/+I8R3afAjfUSIqVkOKvZ6VcCuKkC3lTZ8QeRkjkjj+WDSzbbz3gedLjkAbkFIF2uYFye+nFNyDuL/GLV/Qm9pMOF6oQMN/FY4N3mjtMoToY1enequuzEpUyXnVd+QXkSjBnmxeNCAOWadrpB06Xuw+SnMZmTBgcsMmnJ5CpmP3F4NpPHiS58nxCGRazVDJSPNxnNq8FpQG6V1yRcqwIDAQAB",
   "manifest_version": 2,
   "name": "Savage Rabbit",
   "description": "This extension allows you to find people available in calendar",
@@ -9,13 +10,16 @@
   "permissions": [
     "activeTab",
     "tabs",
-    "storage"
+    "identity"
   ],
+  "oauth2": {
+    "client_id": "1010113822037-osh5m49k7p7shom7q67k216me3bd8i36.apps.googleusercontent.com",
+    "scopes": ["https://www.googleapis.com/auth/calendar.readonly"]   
+  },   
   "background": {
     "scripts": [
       "src/js/background.js",
-      "src/js/hot-reload.js",
-      "gapi-client.js"
+      "src/js/hot-reload.js"
     ]
   }
 }

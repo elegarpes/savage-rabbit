@@ -1,18 +1,42 @@
-const API_KEY = '250219173677-h726op0dq4h2irkquch1pdu33ctd1b4j.apps.googleusercontent.com'
-
 import React from "react";
 
 export default class App extends React.Component {
-
-  render() {
-    return (
-        <button id="signup-button">Sign Up!</button>
-
-    );
-    //if (this.state.gapiReady) {
-    //  return (
-    //    <h1>GAPI is loaded and ready to use.</h1>
-    //  );
-    };
+  constructor(props) {
+    super(props)
+    this.state = { loggedin: false }
   }
 
+  onSignInClick() {
+    chrome.identity.getAuthToken({ interactive: true}, this.onSignInCallback.bind(this));
+  }
+
+  onSignInCallback(token) {
+    if (chrome.runtime.lastError) {
+        alert(chrome.runtime.lastError.message);
+        return;
+    } 
+    this.setState({ loggedin: true })
+  }
+
+  render() {
+    console.log('render');
+    if (this.state.loggedin) {
+      return (
+        <span>Logged in!</span>
+      );
+    } else {
+      return (
+        <button onClick={this.onSignInClick.bind(this)} >Sign in with Google</button>
+      );
+    }
+  }
+}
+
+
+
+        //var x = new XMLHttpRequest();
+        //x.open('GET', 'https://www.googleapis.com/oauth2/v2/userinfo?alt=json&access_token=' + token);
+        //x.onload = function() {
+        //    alert(x.response);
+        //};
+    //x.send();
