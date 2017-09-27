@@ -8,14 +8,16 @@
     "default_icon": "icon.png"
   },
   "permissions": [
-    "activeTab",
     "tabs",
-    "identity"
+    "identity",
+    "https://www.googleapis.com/*",
+    "*://*.google.com/*"
   ],
   "oauth2": {
     "client_id": "1010113822037-osh5m49k7p7shom7q67k216me3bd8i36.apps.googleusercontent.com",
-    "scopes": ["https://www.googleapis.com/auth/calendar.readonly"]   
+    "scopes": ["https://www.googleapis.com/auth/calendar.readonly", "https://www.googleapis.com/auth/calendar"]   
   },   
+  "content_security_policy": "script-src https://*.google.com 'unsafe-eval'; object-src 'self'",
   "background": {
     "scripts": [
       "src/js/background.js",
