@@ -90,6 +90,7 @@ export default class App extends React.Component {
       return (
         <div>
         <button onClick={this.onSignOutClick.bind(this)} >Sign out</button>
+        <br/>
         <div> <DatePicker selected={moment()} onChange={this.handleChange}/> </div>
         </div>
         );
