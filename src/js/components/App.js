@@ -6,6 +6,7 @@ import moment from 'moment';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
+
 export default class App extends React.Component {
   constructor(props) {
     super(props)
@@ -15,7 +16,7 @@ export default class App extends React.Component {
     var e = new Date(s);
     e.setHours(18,0,0,0);// end time is 6pm
 
-    this.state = { signedIn: false, start: s, end: e}
+    this.state = { signedIn: false, start: s, end: e, startDate: moment(), people:['evulpe@thoughtworks.com', 'ssimon@thoughtworks.com']}
   }
 
   onSignInClick() {
@@ -42,6 +43,27 @@ export default class App extends React.Component {
     this.setState({ signedIn: false })
   } 
 
+  showAvailability(){
+        var calendarId;
+        var token = this.state.token; 
+        for (var i = 0; i < this.state.people.length; i++){
+            calendarId = this.state.people[i];
+            console.log(calendarId);
+            var url = 'https://www.googleapis.com/calendar/v3/calendars/' + calendarId + '/events';
+
+            var startTime = this.state.start.toISOString();
+            var endTime = this.state.end.toISOString();
+
+            request
+            .get(url)
+            .set('Authorization', 'Bearer ' + token)
+            .query({ singleEvents: 'true'})
+            .query({ orderBy: 'startTime'})
+            .query({ timeMin: startTime})
+            .query({ timeMax: endTime})
+            .end(this.processRequest.bind(this))
+        }    
+  }
   calendarExampleRequest(token) {
     var calendarId = 'ssimon@thoughtworks.com';
     var url = 'https://www.googleapis.com/calendar/v3/calendars/' + calendarId + '/events';
@@ -62,6 +84,7 @@ export default class App extends React.Component {
   processRequest(err, res) {
     var events = res.body.items;
     var cursor = this.state.start;
+    console.log(events);
 
     if(res.status == 200){
       for(var i = 0; i <  events.length; i++){
@@ -81,7 +104,7 @@ export default class App extends React.Component {
 
   handleChange(date) {
     this.setState({
-      start: date
+      startDate: date
     });
   }
 
@@ -90,8 +113,12 @@ export default class App extends React.Component {
       return (
         <div>
         <button onClick={this.onSignOutClick.bind(this)} >Sign out</button>
-        <br/>
-        <div> <DatePicker selected={moment()} onChange={this.handleChange}/> </div>
+        <DatePicker
+          selected={this.state.startDate}
+          onChange={this.handleChange.bind(this)}
+        />
+        <button onClick={this.showAvailability.bind(this)} >Show</button>
+
         </div>
         );
     } else {
