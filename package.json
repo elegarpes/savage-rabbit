@@ -25,9 +25,13 @@
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.7",
     "input-moment": "^0.3.6",
+    "install": "^0.10.1",
     "jest": "^21.1.0",
     "moment": "^2.18.1",
     "nodemon": "^1.12.1",
+    "rc-time-picker": "^2.4.1",
+    "react-bootstrap": "^0.31.3",
+    "react-bootstrap-time-picker": "^1.0.3",
     "style-loader": "^0.18.2",
     "webpack": "^3.6.0"
   },

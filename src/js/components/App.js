@@ -2,6 +2,7 @@
 import React from "react";
 import request from "superagent";
 import DatePicker from "react-datepicker";
+import TimePicker from 'react-bootstrap-time-picker';
 import moment from 'moment';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -12,9 +13,10 @@ export default class App extends React.Component {
     super(props);
     
     var s = moment().set({'hour': 9, 'minute': 0}); 
-    var e = moment().set({'hour': 18, 'minute': 0}); 
+    var e = moment().set({'hour': 18, 'minute': 0});
+    var d = moment().set({'hour': 1, 'minute': 0}); 
 
-    this.state = { signedIn: false, start: s, end: e, startDate: moment(), people:['evulpe@thoughtworks.com', 'ssimon@thoughtworks.com']}
+    this.state = { signedIn: false, start: s, end: e, startDate: moment(), people:['evulpe@thoughtworks.com', 'ssimon@thoughtworks.com'], slotDuration: d}
   }
 
   onSignInClick() {
@@ -64,21 +66,21 @@ export default class App extends React.Component {
 
     processRequest(err, res) {
         var events = res.body.items;
-        var cursor = this.state.start;
+        var availableSlotStart = this.state.start;
         console.log(events);
 
        if(res.status == 200){
           for(var i = 0; i <  events.length; i++){
             var eventTime = new Date(events[i].start.dateTime);
 
-           if( (eventTime - cursor) > 0){
-              console.log(cursor + ' ' + eventTime);
+           if( moment(availableSlotStart).isBefore(eventTime)){
+              console.log(moment(availableSlotStart).toDate() + ' ' + eventTime);
             }
-            cursor = new Date(events[i].end.dateTime);
+            availableSlotStart = new Date(events[i].end.dateTime);
 
-           //if( (this.state.end - cursor) > 0 && i == ( events.length - 1 )) {
-            //  console.log(cursor + ' ' + this.state.end);
-            //}
+           if(  i == ( events.length - 1 ) && (moment(availableSlotStart).isBefore(this.state.end))) {
+              console.log(availableSlotStart + ' ' + this.state.end);
+            }
           }
         }
       };
@@ -92,7 +94,28 @@ export default class App extends React.Component {
     this.state.end.set({'date': date.get('date'), 'month': date.get('month'), 'year': date.get('year')});
 
   }
+    
+ handleTimeChange(time) {
+    var hour = Math.floor(time/3600);
+    var minutes = (time - hour*3600) / 60;
+    console.log("start time");
+    console.log(hour);  
+    console.log(minutes);
+    this.setState({ time });
+    this.state.start.set({'hour': hour, 'minute': minutes})
+  }
 
+
+  handleDurationChange(duration) {
+    var hour = Math.floor(duration/3600);
+    var minutes = (duration - hour*3600) / 60;
+    console.log("duration");
+    console.log(hour);  
+    console.log(minutes);
+    this.setState({ duration });
+    this.state.slotDuration.set({'hour': hour, 'minute': minutes})
+  }
+    
   render() {
     if (this.state.signedIn) {
       return (
@@ -102,6 +125,11 @@ export default class App extends React.Component {
           selected={this.state.startDate}
           onChange={this.handleChange.bind(this)}
         />
+        <label>Start</label>
+        <TimePicker format={24} start="09:00" end="18:00" step={15} onChange={this.handleTimeChange.bind(this)} value={this.state.time} />
+        <label>Diration</label>
+        <TimePicker format={24} start="00:00" end="02:00" step={15} onChange={this.handleDurationChange.bind(this)} value={this.state.duration} />
+        <br/>
         <button onClick={this.showAvailability.bind(this)} >Show</button>
 
         </div>
