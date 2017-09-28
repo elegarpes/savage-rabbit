@@ -9,12 +9,10 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 export default class App extends React.Component {
   constructor(props) {
-    super(props)
-    var s = new Date(); // TODO parse date from UI
-    s.setHours(9,0,0,0);// starting time is 9am
-
-    var e = new Date(s);
-    e.setHours(18,0,0,0);// end time is 6pm
+    super(props);
+    
+    var s = moment().set({'hour': 9, 'minute': 0}); 
+    var e = moment().set({'hour': 18, 'minute': 0}); 
 
     this.state = { signedIn: false, start: s, end: e, startDate: moment(), people:['evulpe@thoughtworks.com', 'ssimon@thoughtworks.com']}
   }
@@ -34,9 +32,7 @@ export default class App extends React.Component {
       alert(chrome.runtime.lastError.message);
       return;
     } 
-    this.setState({ signedIn: true, token: token })
-
-    this.calendarExampleRequest(token)
+    this.setState({ signedIn: true, token: token });
   }
 
   onSignOutCallback(token){
@@ -64,48 +60,37 @@ export default class App extends React.Component {
             .end(this.processRequest.bind(this))
         }    
   }
-  calendarExampleRequest(token) {
-    var calendarId = 'ssimon@thoughtworks.com';
-    var url = 'https://www.googleapis.com/calendar/v3/calendars/' + calendarId + '/events';
 
-    var startTime = this.state.start.toISOString();
-    var endTime = this.state.end.toISOString();
 
-    request
-    .get(url)
-    .set('Authorization', 'Bearer ' + token)
-    .query({ singleEvents: 'true'})
-    .query({ orderBy: 'startTime'})
-    .query({ timeMin: startTime})
-    .query({ timeMax: endTime})
-    .end(this.processRequest.bind(this))
-  };
+    processRequest(err, res) {
+        var events = res.body.items;
+        var cursor = this.state.start;
+        console.log(events);
 
-  processRequest(err, res) {
-    var events = res.body.items;
-    var cursor = this.state.start;
-    console.log(events);
+       if(res.status == 200){
+          for(var i = 0; i <  events.length; i++){
+            var eventTime = new Date(events[i].start.dateTime);
 
-    if(res.status == 200){
-      for(var i = 0; i <  events.length; i++){
-        var eventTime = new Date(events[i].start.dateTime);
+           if( (eventTime - cursor) > 0){
+              console.log(cursor + ' ' + eventTime);
+            }
+            cursor = new Date(events[i].end.dateTime);
 
-        if( (eventTime - cursor) > 0){
-          console.log(cursor + ' ' + eventTime);
-        } 
-        cursor = new Date(events[i].end.dateTime);
-
-        if( i == ( events.length - 1 )) {
-          console.log(cursor + ' ' + this.state.end);
+           //if( (this.state.end - cursor) > 0 && i == ( events.length - 1 )) {
+            //  console.log(cursor + ' ' + this.state.end);
+            //}
+          }
         }
-      }
-    }
-  }
+      };
 
   handleChange(date) {
     this.setState({
       startDate: date
     });
+      
+    this.state.start.set({'date': date.get('date'), 'month': date.get('month'), 'year': date.get('year')});
+    this.state.end.set({'date': date.get('date'), 'month': date.get('month'), 'year': date.get('year')});
+
   }
 
   render() {
