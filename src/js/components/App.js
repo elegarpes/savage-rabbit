@@ -4,8 +4,8 @@ import request from "superagent";
 import DatePicker from "react-datepicker";
 import TimePicker from 'react-bootstrap-time-picker';
 import moment from 'moment';
-
 import 'react-datepicker/dist/react-datepicker.css';
+import '../../scss/style.scss'
 
 
 export default class App extends React.Component {
